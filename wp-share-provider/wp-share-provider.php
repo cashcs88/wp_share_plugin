@@ -7,28 +7,32 @@
 class ShareProvider
 {
     private static $instance = null;
-	
+
     /**
      * @return Singleton
      */
     public static function getInstance()
     {
-        if (null === self::$instance)
-        {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
         return self::$instance;
     }
-	
-    private function __clone() {}
-	
-    private function __construct() {
-        add_action('admin_menu' , array( $this , 'initShareSettings') ); //Add Plugin Setting Page to menu
+
+    private function __clone()
+    {
     }
 
-    public function initShareSettings()
+    private function __construct()
     {
-        // To Add as submennu of Settings ( <! Hide one, which you want !> )
+        add_action('admin_menu', array($this, 'initShareMenu')); //Add Plugin Setting Page to menu
+        add_action('admin_init', array($this, 'initShareSettings')); //Register plugin Settings
+        add_action('admin_init', array($this, 'initShareSettingsPage')); //Register plugin Settings
+    }
+
+    public function initShareMenu()
+    {
+        //To Add as submennu of Settings ( <! Hide one, which you want !> )
         /*
         add_options_page(
             'Share Provider', //The text to be displayed in the title tags of the page when the menu is selected
@@ -39,7 +43,7 @@ class ShareProvider
         );
         */
 
-        // To Add as submennu of Settings ( <! Hide one, which you want !> )
+        //To Add as submennu of Settings ( <! Hide one, which you want !> )
         /*
         add_submenu_page(
             'options-general.php', //You can use any Parent from Main Dashboard Menu
@@ -51,31 +55,39 @@ class ShareProvider
         );
         */
 
-        // To Add as item in Main Dashboard Menu ( <! Hide one, which you want !> )
+        //To Add as item in Main Dashboard Menu ( <! Hide one, which you want !> )
         add_menu_page(
             'Share Provider', //The text to be displayed in the title tags of the page when the menu is selected
             'Share', //The text to be used for the menu
             'install_plugins', //The capability required for this menu to be displayed to the user.
             'share-provider-plugin', //The slug name to refer to this menu by (should be unique for this menu).
-            array( $this, 'initShareSettingsPage' ), //The function to be called to output the content for this page.
+            array($this, 'initShareSettingsPage'), //The function to be called to output the content for this page.
             'dashicons-share' //Dashicons is the official icon font of the WordPress admin as of 3.8.
         );
     }
 
-    public function initShareSettingsPage() {
-			//Plugin settings page code...
-    }
-	
-	// Just for NOTES
-	/*
-	public function test() {
-		var_dump($this);
-	}
-	*/
-}
-ShareProvider::getInstance();  // Getting class object
+    public function initShareSettings()
+    {
 
-/** start NOTES **/
+    }
+
+    public function initShareSettingsPage()
+    {
+        /*
+        add_settings_section(
+            'global',
+            'Global Share Plugin settings',
+            'initGlobalSharePluginSettingsSection',
+            'share-provider-plugin' );
+        */
+    }
+
+    public function initGlobalSharePluginSettingsSection() {
+
+    }
+}
+
+ShareProvider::getInstance();  // Getting class object
 
 //All is the same - Getting class object
 //
